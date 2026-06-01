@@ -97,12 +97,30 @@ Usa la configurazione standard che monta la directory locale `./data/`:
 docker-compose up -d --build
 ```
 
-#### B. Ambiente NAS (`docker-compose.nas.yml`)
-Usa la configurazione ottimizzata che monta le cartelle persistenti sul NAS (`/share/Storage/Docker/NotifyHub/data`):
+#### B. Ambiente NAS (`docker-compose.nas.yml` - Flusso Ottimizzato)
+Per il NAS, al fine di evitare il trasferimento di tutti i file di codice sorgente, l'applicazione adotta lo stesso flusso ad alte prestazioni di **MediaButler**:
 
-```bash
-docker-compose -f docker-compose.nas.yml up -d --build
-```
+1. **Compilazione ed Esportazione Locale (su Mac)**:
+   Esegui lo script di automazione per cross-compilare l'immagine ottimizzata per l'architettura ARM32v7 del NAS ed esportarla in un pacchetto `.tar`:
+   ```bash
+   ./skills-codelab/app_build/scripts/deploy-nas.sh build
+   ```
+   Lo script genererà l'archivio in `skills-codelab/app_build/build/notifyhub-nas-arm32.tar`.
+
+2. **Copia del pacchetto e di docker-compose sul NAS**:
+   Copia sul tuo NAS **esclusivamente** il file tarball e la configurazione `docker-compose.nas.yml`:
+   ```bash
+   scp skills-codelab/app_build/build/notifyhub-nas-arm32.tar skills-codelab/app_build/docker-compose.nas.yml admin@<NAS_IP>:/share/Storage/Docker/NotifyHub/
+   ```
+
+3. **Caricamento e Avvio sul NAS (tramite SSH)**:
+   Collegati in SSH sul NAS ed esegui i comandi per caricare l'immagine ed avviare il container:
+   ```bash
+   cd /share/Storage/Docker/NotifyHub/
+   docker load -i notifyhub-nas-arm32.tar
+   docker compose -f docker-compose.nas.yml up -d
+   ```
+   *(Nota: l'immagine precompilata verrà iniettata direttamente nel daemon Docker del NAS, senza alcuna necessità di compilazione locale o presenza di file sorgente sul NAS).*
 
 ---
 

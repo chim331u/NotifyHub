@@ -4,9 +4,6 @@ services:
   notifyhub:
     image: notifyhub:latest
     container_name: notifyhub-service
-    build:
-      context: .
-      dockerfile: Dockerfile.arm32
     restart: unless-stopped
     ports:
       - "30180:30180" # Porta locale di ascolto di NotifyHub

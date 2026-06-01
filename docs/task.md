@@ -1,9 +1,16 @@
 # Registro dei Task e Stato Implementativo (NotifyHub)
 
+## 2026-06-01 - Versione 1.0.3
+- [x] Implementazione dello script di build ed esportazione locale `deploy-nas.sh`.
+- [x] Rimozione del blocco `build` da `docker-compose.nas.yml` per consentire l'avvio tramite immagine caricata da tarball.
+- [x] Integrazione della cartella di compilazione `build/` in `.gitignore`.
+- [x] Documentazione dettagliata del flusso compilazione locale + `docker load` nel manuale di deployment (`Deployment_Manual.md`).
+
 ## 2026-06-01 - Versione 1.0.2
 - [x] Creazione di `docker-compose.nas.yml` con percorsi dei volumi configurati per l'archiviazione del NAS.
 - [x] Aggiornamento del Manuale di Deployment (`Deployment_Manual.md`) con comandi e configurazioni dedicate per ambiente NAS.
 - [x] Sincronizzazione dell'albero dei file in `Technical_Specification.md`.
+
 
 ## 2026-06-01 - Versione 1.0.0
 - [x] Inizializzazione della struttura del progetto in `skills-codelab/app_build/`.

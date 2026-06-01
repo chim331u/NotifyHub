@@ -109,7 +109,9 @@ NotifyHub/
 │   │   │   ├── config.go
 │   │   │   └── secrets.go           # Caricamento segreti locali in modo polimorfico
 │   │   ├── scripts/
-│   │   │   └── bump-version.sh      # Script bash per incremento controllato di minor/major
+│   │   │   ├── bump-version.sh      # Script bash per incremento controllato di minor/major
+│   │   │   └── deploy-nas.sh        # Script di automazione compilazione incrociata per NAS
+│   │   ├── build/                 # Sottocartella per gli output di compilazione locali (esclusa da git)
 │   │   └── src/
 │   │       └── main.go              # Codice sorgente del microservizio in Go
 │   └── .agents/               # Folder per la gestione degli agenti (come in skills-codelab)
