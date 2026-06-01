@@ -102,7 +102,8 @@ NotifyHub/
 ├── skills-codelab/
 │   ├── app_build/             # Directory con il codice sorgente compilabile ed eseguibile
 │   │   ├── VERSION                  # File piatto contenente la versione SemVer (es. 1.0.0)
-│   │   ├── docker-compose.yml       # Configurazione Docker isolata
+│   │   ├── docker-compose.yml       # Configurazione Docker isolata (macOS/Local)
+│   │   ├── docker-compose.nas.yml   # Configurazione Docker isolata (NAS)
 │   │   ├── Dockerfile.arm32         # Dockerfile multi-stage ottimizzato per ARM32v7 / NAS
 │   │   ├── config/
 │   │   │   ├── config.go

@@ -1,5 +1,10 @@
 # Registro dei Task e Stato Implementativo (NotifyHub)
 
+## 2026-06-01 - Versione 1.0.2
+- [x] Creazione di `docker-compose.nas.yml` con percorsi dei volumi configurati per l'archiviazione del NAS.
+- [x] Aggiornamento del Manuale di Deployment (`Deployment_Manual.md`) con comandi e configurazioni dedicate per ambiente NAS.
+- [x] Sincronizzazione dell'albero dei file in `Technical_Specification.md`.
+
 ## 2026-06-01 - Versione 1.0.0
 - [x] Inizializzazione della struttura del progetto in `skills-codelab/app_build/`.
 - [x] Configurazione del file `VERSION` a `1.0.0`.

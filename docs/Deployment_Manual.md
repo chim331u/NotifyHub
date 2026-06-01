@@ -87,19 +87,41 @@ Il Dockerfile è progettato per ottimizzare le dimensioni e la sicurezza del con
 *   **Stage 2 (Run)**: Copia il binario compilato all'interno di un'immagine `alpine` pulita e priva di strumenti di sviluppo superflui per minimizzare l'attacco di sicurezza e mantenere la RAM ridotta (<10MB).
 
 ### 3.2 Avvio del Servizio con Docker Compose
-Assicurati che la directory `./data/` esista e contenga il file dei segreti `notifyhub-secrets.json`.
 
-Per avviare il container in background:
+A seconda del sistema di destinazione, sono disponibili due configurazioni pre-configurate di Docker Compose:
+
+#### A. Ambiente Local / macOS (`docker-compose.yml`)
+Usa la configurazione standard che monta la directory locale `./data/`:
+
 ```bash
 docker-compose up -d --build
 ```
 
+#### B. Ambiente NAS (`docker-compose.nas.yml`)
+Usa la configurazione ottimizzata che monta le cartelle persistenti sul NAS (`/share/Storage/Docker/NotifyHub/data`):
+
+```bash
+docker-compose -f docker-compose.nas.yml up -d --build
+```
+
+---
+
+### 3.3 Comandi Operativi Comuni
+
 Per visualizzare i log del servizio in tempo reale:
 ```bash
+# Per macOS / Local
 docker-compose logs -f
+
+# Per NAS
+docker-compose -f docker-compose.nas.yml logs -f
 ```
 
 Per arrestare il microservizio:
 ```bash
+# Per macOS / Local
 docker-compose down
+
+# Per NAS
+docker-compose -f docker-compose.nas.yml down
 ```
