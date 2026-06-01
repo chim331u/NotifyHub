@@ -4,6 +4,7 @@ services:
   notifyhub:
     image: notifyhub:latest
     container_name: notifyhub-service
+    network_mode: "bridge"
     restart: unless-stopped
     ports:
       - "30180:30180" # Porta locale di ascolto di NotifyHub

@@ -1,5 +1,8 @@
 # Registro dei Task e Stato Implementativo (NotifyHub)
 
+## 2026-06-01 - Versione 1.0.4
+- [x] Risoluzione del problema di creazione della rete virtuale su QNAP Container Station forzando `network_mode: "bridge"` all'interno di `docker-compose.nas.yml` per bypassare i bug di `qnetwork-tool`.
+
 ## 2026-06-01 - Versione 1.0.3
 - [x] Implementazione dello script di build ed esportazione locale `deploy-nas.sh`.
 - [x] Rimozione del blocco `build` da `docker-compose.nas.yml` per consentire l'avvio tramite immagine caricata da tarball.
