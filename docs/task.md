@@ -1,5 +1,8 @@
 # Registro dei Task e Stato Implementativo (NotifyHub)
 
+## 2026-06-01 - Versione 1.0.5
+- [x] Modifica della porta esposta su NAS da `30180` a `30111` (sia interna che esterna) in `docker-compose.nas.yml`.
+
 ## 2026-06-01 - Versione 1.0.4
 - [x] Risoluzione del problema di creazione della rete virtuale su QNAP Container Station forzando `network_mode: "bridge"` all'interno di `docker-compose.nas.yml` per bypassare i bug di `qnetwork-tool`.
 
