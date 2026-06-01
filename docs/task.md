@@ -1,5 +1,8 @@
 # Registro dei Task e Stato Implementativo (NotifyHub)
 
+## 2026-06-01 - Versione 1.0.6
+- [x] Gestione degli errori permanenti HTTP 4xx (client error) nell'invio delle API esterne (Telegram, Discord) per abortire immediatamente i retry ed evitare sprechi di CPU/risorse in caso di messaggi malformati.
+
 ## 2026-06-01 - Versione 1.0.5
 - [x] Modifica della porta esposta su NAS da `30180` a `30111` (sia interna che esterna) in `docker-compose.nas.yml`.
 

@@ -20,6 +20,9 @@ import (
 	"notifyhub/config"
 )
 
+// ErrPermanent definisce un errore che non deve essere ritentato in quanto definitivo.
+var ErrPermanent = errors.New("errore permanente")
+
 // Notification rappresenta la struttura del messaggio in transito nella coda.
 type Notification struct {
 	Channel   string `json:"channel"`
@@ -192,6 +195,12 @@ func (app *App) processNotificationWithRetry(note Notification) {
 			return
 		}
 
+		// Se l'errore è contrassegnato come permanente (4xx), interrompe immediatamente i tentativi
+		if errors.Is(err, ErrPermanent) {
+			log.Printf("[FATAL ERR] Errore permanente sul canale '%s': %v. Interruzione immediata dei tentativi.\n", note.Channel, err)
+			return
+		}
+
 		log.Printf("[Retry #%d] Errore durante l'invio sul canale '%s': %v. Nuovo tentativo tra %v...\n", attempt, note.Channel, err, backoff)
 		
 		// Attesa con possibilità di interruzione
@@ -278,6 +287,11 @@ func (app *App) sendRealTelegram(token, chatID, message string) error {
 		return errors.New("rate limit di Telegram superato")
 	}
 
+	// Gli errori 4xx (client error) esclusi i rate limit 429 sono permanenti e non vanno ritentati
+	if resp.StatusCode >= 400 && resp.StatusCode < 500 {
+		return fmt.Errorf("%w: errore API Telegram (HTTP %d)", ErrPermanent, resp.StatusCode)
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("errore API Telegram: codice di stato HTTP %d", resp.StatusCode)
 	}
@@ -300,6 +314,11 @@ func (app *App) sendRealDiscord(webhookURL, message string) error {
 		return fmt.Errorf("chiamata HTTP a Discord fallita: %w", err)
 	}
 	defer resp.Body.Close()
+
+	// Gli errori 4xx (client error) esclusi i rate limit 429 sono permanenti e non vanno ritentati
+	if resp.StatusCode >= 400 && resp.StatusCode < 500 && resp.StatusCode != http.StatusTooManyRequests {
+		return fmt.Errorf("%w: errore API Discord (HTTP %d)", ErrPermanent, resp.StatusCode)
+	}
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("errore Webhook Discord: codice di stato HTTP %d", resp.StatusCode)
