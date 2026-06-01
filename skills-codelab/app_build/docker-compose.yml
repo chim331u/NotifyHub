@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  notifyhub:
+    image: notifyhub:latest
+    container_name: notifyhub-service
+    build:
+      context: .
+      dockerfile: Dockerfile.arm32
+    restart: unless-stopped
+    ports:
+      - "30180:30180" # Porta locale di ascolto di NotifyHub
+    volumes:
+      # Volume per persistere i dati in modo isolato
+      - ./data:/app/data
+      # File per la lettura locale e sicura delle API Key
+      - ./data/notifyhub-secrets.json:/app/data/notifyhub-secrets.json:ro
+    environment:
+      - NOTIFYHUB_ENV=production
+      - NOTIFYHUB_PORT=30180

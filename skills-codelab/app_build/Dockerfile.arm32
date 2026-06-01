@@ -1,0 +1,26 @@
+# Stage 1: Build base
+FROM golang:1.21-alpine AS builder
+
+WORKDIR /build
+
+# Copia i file di dipendenze (utilizziamo stdlib quindi principalmente i sorgenti)
+COPY . .
+
+# Compila un binario statico ottimizzato
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o notifyhub src/main.go
+
+# Stage 2: Runtime
+FROM alpine:3.19
+
+RUN apk --no-cache add ca-certificates tzdata
+
+WORKDIR /app
+
+# Copia il binario compilato dallo stage builder
+COPY --from=builder /build/notifyhub /app/notifyhub
+
+# Esponi la porta predefinita
+EXPOSE 30180
+
+# Comando di avvio del servizio
+ENTRYPOINT ["/app/notifyhub"]
