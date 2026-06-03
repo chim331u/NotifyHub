@@ -89,7 +89,7 @@ Verrà mantenuto un file `task.md` nella radice del progetto, aggiornato in temp
 
 `NotifyHub` risiederà in un workspace indipendente, con un file `docker-compose.yml` dedicato per consentire avvii, arresti e aggiornamenti isolati da qualsiasi altro progetto (come MediaButler o HouseLedger).
 
-Il progetto adotterà una struttura a cartelle integrata che include anche la gestione degli agenti intelligenti ereditando i moduli operativi da `skills-codelab`.
+Il progetto adotterà una struttura a cartelle integrata che include anche la gestione degli agenti intelligenti tramite submodulo.
 
 ### Struttura della directory di `NotifyHub`:
 ```
@@ -99,25 +99,26 @@ NotifyHub/
 │   ├── User_Manual.md            # Manuale utente e guide all'integrazione API
 │   ├── Deployment_Manual.md      # Istruzioni di build, cross-compilation e Docker
 │   └── task.md                  # Registro storico implementazioni (nuovo in alto)
-├── skills-codelab/
-│   ├── app_build/             # Directory con il codice sorgente compilabile ed eseguibile
-│   │   ├── VERSION                  # File piatto contenente la versione SemVer (es. 1.0.0)
-│   │   ├── docker-compose.yml       # Configurazione Docker isolata (macOS/Local)
-│   │   ├── docker-compose.nas.yml   # Configurazione Docker isolata (NAS)
-│   │   ├── Dockerfile.arm32         # Dockerfile multi-stage ottimizzato per ARM32v7 / NAS
-│   │   ├── config/
-│   │   │   ├── config.go
-│   │   │   └── secrets.go           # Caricamento segreti locali in modo polimorfico
-│   │   ├── scripts/
-│   │   │   ├── bump-version.sh      # Script bash per incremento controllato di minor/major
-│   │   │   └── deploy-nas.sh        # Script di automazione compilazione incrociata per NAS
-│   │   ├── build/                 # Sottocartella per gli output di compilazione locali (esclusa da git)
-│   │   └── src/
-│   │       └── main.go              # Codice sorgente del microservizio in Go
-│   └── .agents/               # Folder per la gestione degli agenti (come in skills-codelab)
-│       ├── agents.md          # Definizione dei ruoli degli agenti autonomi
-│       ├── skills/            # Istruzioni operative specifiche per fase
-│       └── workflows/         # Flussi di esecuzione per la pipeline
+├── .agents/                   # Folder per la gestione degli agenti (submodulo Git alla radice)
+│   ├── agents.md              # Definizione dei ruoli degli agenti autonomi
+│   ├── skills/                # Istruzioni operative specifiche per fase
+│   └── workflows/             # Flussi di esecuzione per la pipeline
+├── src/                       # Directory principale con codice sorgente e file operativi
+│   ├── VERSION                # File piatto contenente la versione SemVer
+│   ├── go.mod                 # Modulo Go
+│   ├── main.go                # Codice sorgente principale del microservizio in Go
+│   ├── main_test.go           # File di test Go
+│   ├── docker-compose.yml     # Configurazione Docker isolata (macOS/Local)
+│   ├── docker-compose.nas.yml # Configurazione Docker isolata (NAS)
+│   ├── Dockerfile.arm32       # Dockerfile ottimizzato per ARM32v7 / NAS
+│   ├── config/
+│   │   ├── config.go
+│   │   └── secrets.go         # Caricamento segreti locali in modo polimorfico
+│   ├── scripts/
+│   │   ├── bump-version.sh    # Script bash per incremento controllato di minor/major
+│   │   └── deploy-nas.sh      # Script di automazione per compilazione e deploy su NAS
+│   ├── build/                 # Sottocartella per gli output di compilazione locali (esclusa da git)
+│   └── data/                  # Cartella dati per i segreti
 └── .git/hooks/pre-push        # Hook git locale per incremento automatico di patch
 ```
 

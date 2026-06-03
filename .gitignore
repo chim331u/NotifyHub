@@ -31,5 +31,6 @@ go.work.sum
 # .idea/
 # .vscode/
 
-# Build output
-skills-codelab/app_build/build/
+# Build output and dynamic runtime files
+src/build/
+src/data/

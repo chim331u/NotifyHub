@@ -103,7 +103,7 @@ Per il NAS, al fine di evitare il trasferimento manuale di file e l'esecuzione d
 1. **Deploy Automatico in un click (da Mac a NAS)**:
    Esegui lo script di automazione con il comando `deploy`:
    ```bash
-   ./skills-codelab/app_build/scripts/deploy-nas.sh deploy
+   ./src/scripts/deploy-nas.sh deploy
    ```
    Lo script eseguirà automaticamente:
    * La cross-compilazione Docker per ARM32v7 sul Mac.
@@ -116,7 +116,7 @@ Per il NAS, al fine di evitare il trasferimento manuale di file e l'esecuzione d
 2. **Opzioni e Personalizzazione del Deploy**:
    Se il NAS utilizza configurazioni o indirizzi IP diversi dai default, puoi passare parametri da terminale:
    ```bash
-   ./skills-codelab/app_build/scripts/deploy-nas.sh deploy --ip 192.168.1.10 --user admin --port 22 --path /share/Storage/Docker/NotifyHub
+   ./src/scripts/deploy-nas.sh deploy --ip 192.168.1.10 --user admin --port 22 --path /share/Storage/Docker/NotifyHub
    ```
 
 3. **Verifica dello Stato sul NAS**:

@@ -7,7 +7,7 @@ WORKDIR /build
 COPY . .
 
 # Compila un binario statico ottimizzato
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o notifyhub src/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o notifyhub main.go
 
 # Stage 2: Runtime
 FROM alpine:3.19
