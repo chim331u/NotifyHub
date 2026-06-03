@@ -97,29 +97,30 @@ Usa la configurazione standard che monta la directory locale `./data/`:
 docker-compose up -d --build
 ```
 
-#### B. Ambiente NAS (`docker-compose.nas.yml` - Flusso Ottimizzato)
-Per il NAS, al fine di evitare il trasferimento di tutti i file di codice sorgente, l'applicazione adotta lo stesso flusso ad alte prestazioni di **MediaButler**:
+#### B. Ambiente NAS (`docker-compose.nas.yml` - Deploy Automatico)
+Per il NAS, al fine di evitare il trasferimento manuale di file e l'esecuzione di comandi SSH ripetitivi, l'applicazione adotta un flusso totalmente automatizzato:
 
-1. **Compilazione ed Esportazione Locale (su Mac)**:
-   Esegui lo script di automazione per cross-compilare l'immagine ottimizzata per l'architettura ARM32v7 del NAS ed esportarla in un pacchetto `.tar`:
+1. **Deploy Automatico in un click (da Mac a NAS)**:
+   Esegui lo script di automazione con il comando `deploy`:
    ```bash
-   ./skills-codelab/app_build/scripts/deploy-nas.sh build
+   ./skills-codelab/app_build/scripts/deploy-nas.sh deploy
    ```
-   Lo script genererà l'archivio in `skills-codelab/app_build/build/notifyhub-nas-arm32.tar`.
+   Lo script eseguirà automaticamente:
+   * La cross-compilazione Docker per ARM32v7 sul Mac.
+   * Il salvataggio dell'immagine in un pacchetto tarball in locale.
+   * L'avvio di una connessione SSH multiplexata (chiedendo la password **una sola volta**).
+   * La creazione della cartella remota e il trasferimento dell'immagine tarball, del file `docker-compose.nas.yml` e dello script stesso.
+   * Il controllo della presenza di `notifyhub-secrets.json` sul NAS (caricando quello del Mac se assente sul NAS).
+   * L'importazione dell'immagine nel demone Docker del NAS e l'avvio del container tramite Docker Compose.
 
-2. **Copia del pacchetto e di docker-compose sul NAS**:
-   Copia sul tuo NAS **esclusivamente** il file tarball e la configurazione `docker-compose.nas.yml`:
+2. **Opzioni e Personalizzazione del Deploy**:
+   Se il NAS utilizza configurazioni o indirizzi IP diversi dai default, puoi passare parametri da terminale:
    ```bash
-   scp skills-codelab/app_build/build/notifyhub-nas-arm32.tar skills-codelab/app_build/docker-compose.nas.yml admin@<NAS_IP>:/share/Storage/Docker/NotifyHub/
+   ./skills-codelab/app_build/scripts/deploy-nas.sh deploy --ip 192.168.1.10 --user admin --port 22 --path /share/Storage/Docker/NotifyHub
    ```
 
-3. **Caricamento e Avvio sul NAS (tramite SSH)**:
-   Collegati in SSH sul NAS ed esegui i comandi per caricare l'immagine ed avviare il container:
-   ```bash
-   cd /share/Storage/Docker/NotifyHub/
-   docker load -i notifyhub-nas-arm32.tar
-   docker compose -f docker-compose.nas.yml up -d
-   ```
+3. **Verifica dello Stato sul NAS**:
+   Una volta completato, lo script verificherà che il container sia running e mostrerà gli endpoint del servizio.
    *(Nota: l'immagine precompilata verrà iniettata direttamente nel daemon Docker del NAS, senza alcuna necessità di compilazione locale o presenza di file sorgente sul NAS).*
 
 ---
